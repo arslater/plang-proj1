@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+void doTest(char ***);
+
 int main(int argc, char ** argv)
 {
     unsigned short int RETRN_CODE = 0;
@@ -36,19 +38,23 @@ int main(int argc, char ** argv)
 
             ////////////////////////////////////
             // Goal here: to cycle through the file and store each line of input as a string
-            while( fgets(buff,200,fp) != NULL)
+            while( 1 )
             {
-                readLine[i] = buff;
-                printf("Reading: %s", readLine[i]);
+                readLine[i] = (char *)malloc(sizeof(char)*200);
+                fgets(readLine[i], 200,fp);
+                if (feof(fp))
+                    break;
+                printf("Reading: %s",readLine[i]);
                 i++;
             }
-            /*
+            //doTest(readLine);
+            i--;
             while( i>0)
             {
                 printf("[%d]: %s",i,readLine[i]);
                 i--;
             }
-*/
+
             //fgets(readLine, 200, fp);   // Assuming max of 200 charachters per line.
 
             fclose(fp);
