@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include"parse.h"
 
 void doTest(char ***);
 
@@ -47,15 +48,9 @@ int main(int argc, char ** argv)
                 printf("Reading: %s",readLine[i]);
                 i++;
             }
-            //doTest(readLine);
+           // doTest(readLine);
+            parseRegex(regex, readLine);
             i--;
-            while( i>0)
-            {
-                printf("[%d]: %s",i,readLine[i]);
-                i--;
-            }
-
-            //fgets(readLine, 200, fp);   // Assuming max of 200 charachters per line.
 
             fclose(fp);
         }
