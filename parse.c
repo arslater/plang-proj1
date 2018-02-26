@@ -9,12 +9,13 @@ void parseRegex(char * regex, char ** file) {
     printf("Parsing '%s'\n", regex);
     int i = 0;
     int j = 0;
-    char *literal = (char *) malloc(sizeof(char) * 100);
+    //char *literal = (char *) malloc(sizeof(char) * 100);
     ///////////////////////////////////////
     // Objective 2: try to get the pieces parsed
 
     elementsStruct *elements = malloc(sizeof(elementsStruct));
-
+    elements -> lineNum = 1;
+    elements -> literal = (char *) malloc(sizeof(char)*15);
     //////////////////////////
     // Is this parsing????????
     while(file[j] != NULL) {
@@ -35,9 +36,16 @@ void parseRegex(char * regex, char ** file) {
                     printf("Hey, there's a plus\n");
                     break;
                 default:
-                    printf("Hey, there's a letter here. Adding '%c' to '%s\n", regex[i], elements ->literal);
-                    elements->literal = (char *) malloc(sizeof(char)*2);
-                    elements->literal+= regex[i];
+                    elements->literal = (char *) malloc(sizeof(char)*50);
+                   // strncpy(elements -> literal,regex[i]);
+                    //sprintf(strlen((elements->literal))+elements->literal, regex[i]);
+
+                    //elements -> literal[i] = regex[i];
+                   // sprintf(elements -> literal[i], "%c",regex[i] );
+                   // sprintf(elements -> literal, "%c\n",regex[i]);
+                    elements -> literal[i] = regex[i];
+                   // printf("butts\n");
+                   printf("[%d]-iteration there's a letter here. Adding '%c' to '%s'\n",i, regex[i], elements ->literal);
                     break;
             }
             i++;
