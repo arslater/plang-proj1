@@ -30,11 +30,14 @@ public class Visitor
                 for ( Node condition: ((WhileNode)item).conditions
                     .children )
                 {
-                    System.out.print("V_pL_if_f: "+((TwoOperandNode)
-                            condition).operand1);
+                    Operand reg1 = ((TwoOperandNode)condition).operand1;
+                    Operand reg2 = ((TwoOperandNode)condition).operand2;
+
+                    System.out.print("V_pL_if_f: "+((RegisterOperand)reg1)
+                            .GetRegister());
                     System.out.print("  "+condition.GetType());
-                    System.out.println(" "+((TwoOperandNode)
-                            condition).operand2);
+                    System.out.println(" "+((RegisterOperand)reg2)
+                            .GetRegister());
                 }
                 for ( Node condition: ((WhileNode)item).statements
                     .children )
