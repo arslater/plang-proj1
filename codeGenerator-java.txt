@@ -1,0 +1,57 @@
+You have been provided with a framework for a java application. It will not compile because there is a class and method missing (Visitor::visit). Your assignment is to create the visit method and whatever other methods you see fit. There are some rather unusual rules, though:
+
+1) You may not use loops (while, for, do/until). Any looping that needs to happen must happen via recursion.
+2) You may create ONLY local variables. You may NOT create members or globals.
+3) You may NOT submit changes to any of the classes in the framework. You MAY and SHOULD, however, add your own tests to "Main" and test your code thoroughly.
+4) Visitor must be a static class with only static methods. All methods except Visit must be private.
+
+Visitor will be passed a "StatementsNode". Visitor must print assembly instructions in the following format:
+##: opc op1,op2
+For example:
+0: add R0,R1
+or
+1: sub $1000,$2000
+or
+3: jmp $9999 
+
+The first value is a sequence number and is incremented after an instruction is printed.
+
+There are two types of operand: 
+	RegisterOperand - this represents a register in the CPU. It contains a single int. Print these as R# (R0, R1, R2, etc)
+	AddressOperand - this represents an address in the computer's memory. It contains a single long. Print these as $ ($1234, $3456), etc. Don't worry about forcing a certain number of decimal places.
+	Do not assume that if an instruction uses one type of operand, all of the operands will be of the same type. It is perfectly acceptable to have this:
+	add R0,$2000
+
+There are three types of instruction node:
+	StatementsNode - this node contains a list of Nodes. Print each node in the list. The list will never be null or empty.
+	TwoOperandNode - this node represents math - add, sub, mul, div. Each node has two operands and a "type" character (one of +, -, *, /). 
+	WhileOperand - this node represents a while loop. It contains two StatementsNodes - statements and conditions. Here is the format for a WhileOperand:
+$X:	<<<conditions>>>
+	bne $00000000
+	<<<statements>>>
+	jmp $X
+
+X has to match the counter of the first instruction in the conditions. Neither statements nor conditions can be null or empty.
+For example:
+	1: add R0,R1
+	2: bne $00000000
+	3: sub $1000,R2
+	4: jmp $1
+
+Here is what Visitor should print if you have not modified Main:
+
+0: sub $3333,$4444
+1: add R0,R1
+2: add R1,R2
+3: add R2,R3
+4: add R3,R4
+5: add R4,R5
+6: bne $00000000
+7: sub R0,R1
+8: sub R1,R2
+9: sub R2,R3
+10: sub R3,R4
+11: sub R4,R5
+12: sub $1000,$2000
+13: jmp $1
+
