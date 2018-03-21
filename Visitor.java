@@ -33,20 +33,27 @@ public class Visitor
                     Operand reg1 = ((TwoOperandNode)condition).operand1;
                     Operand reg2 = ((TwoOperandNode)condition).operand2;
 
-                    System.out.print("V_pL_if_f: "+((RegisterOperand)reg1)
+                    System.out.print("V_pL_if_f: R"+((RegisterOperand)reg1)
                             .GetRegister());
                     System.out.print("  "+condition.GetType());
-                    System.out.println(" "+((RegisterOperand)reg2)
+                    System.out.println(" R"+((RegisterOperand)reg2)
                             .GetRegister());
                 }
                 for ( Node condition: ((WhileNode)item).statements
                     .children )
                 {
-                    System.out.print("V_pL_if_f: "+((TwoOperandNode)
-                            condition).operand1);
-                    System.out.print("  "+condition.GetType());
-                    System.out.println(" "+((TwoOperandNode)
-                            condition).operand2);
+                     Operand reg1 = ((TwoOperandNode)condition).operand1;
+                     Operand reg2 = ((TwoOperandNode)condition).operand2;
+
+                    if( reg1.GetType() != 'A' && reg2.GetType() != 'A')
+                    {
+                        System.out.print("V_pL_if_f: R"+((RegisterOperand)reg1)
+                            .GetRegister());
+                        System.out.print("  "+condition.GetType());
+                        System.out.println(" R"+((RegisterOperand)reg2)
+                            .GetRegister());
+                    }
+
                 }
 
                 //System.out.println("V_pl_if1: "+((WhileNode)item).statements
