@@ -37,7 +37,6 @@ public class Visitor
         {
             Queue<Node> nodeChildren = null;
             Iterator <Node> childIter = null;
-            int i = 8;
 
             Node curNode = iter.next();
 
@@ -49,7 +48,6 @@ public class Visitor
                 nodeChildren = ((WhileNode)curNode).conditions.children;
                 childIter    = nodeChildren.iterator();
                 lineNum = parseOperands(lineNum, childIter);
-                i = lineNum;
 
                 System.out.println( "## "+lineNum);
 
@@ -62,7 +60,7 @@ public class Visitor
             }
             //System.out.println( "## "+lineNum);
             //lineNum++;
-            return (parseNodes(lineNum+1, iter));
+            return (parseNodes(lineNum, iter));
         }
         return lineNum;
     }
