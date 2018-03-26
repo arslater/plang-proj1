@@ -28,7 +28,7 @@ public class Visitor
       Iterator <Node> iter = listOfNodes.iterator();
       int i = Visitor.parseNodes(lineNum, iter);
       System.out.println("-------$$$-------"+i);
-      Visitor.uglyCode(listOfNodes);
+      //Visitor.uglyCode(listOfNodes);
 
     }
     static int parseNodes(int lineNum, Iterator <Node> iter)
@@ -47,9 +47,11 @@ public class Visitor
                 // Conditions
                 nodeChildren = ((WhileNode)curNode).conditions.children;
                 childIter    = nodeChildren.iterator();
+
                 lineNum = parseOperands(lineNum, childIter);
 
-                System.out.println( "## "+lineNum);
+                System.out.println(lineNum+":V_pN: bne $00000000");
+                lineNum++;
 
                 /////////////////////////////////
                 // Statements
@@ -57,6 +59,8 @@ public class Visitor
                 childIter    = nodeChildren.iterator();
                 //parseOperands(parseOperands(lineNum, childIter), childIter);
                 lineNum = parseOperands(lineNum, childIter);
+
+                System.out.println(lineNum+":V_pN:jmp $");
             }
             //System.out.println( "## "+lineNum);
             //lineNum++;
@@ -82,9 +86,11 @@ public class Visitor
             else
             {
                 long addr1 = ((AddressOperand)reg1).GetAddress();
-                long addr2 = ((AddressOperand)reg1).GetAddress();
+                long addr2 = ((AddressOperand)reg2).GetAddress();
                 //System.out.print("What's this? "+reg1.GetType());
-                System.out.println("V_pR: R"+addr1+" "+curNode.GetType()+" " +
+                System.out.println(lineNum+":V_pR: R"+addr1+" "+curNode
+                        .GetType()
+                        +" " +
                         "R"+addr2);
             }
             return (parseOperands(lineNum+1,childIter));
