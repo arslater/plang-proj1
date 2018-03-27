@@ -7,12 +7,6 @@ public class Visitor
     //private Queue<Node> children;
     public static void Visit(Node base)
     {
-        //(StatementsNode)base;
-        //if( base.GetType() == 's')
-        //{
-          //  System.out.println("V:The first child is: "+((StatementsNode)
-           //         base).children.remove());
-        //}
         if( ((StatementsNode)base).children.peek() != null)
         {
          int lineNum=0;
@@ -53,10 +47,13 @@ public class Visitor
 
                 System.out.println(lineNum+":V_pN:jmp $");
             }
-            //else
+            else
+            {
+                Operand reg1 = ((TwoOperandNode)curNode).operand1;
+                Operand reg2 = ((TwoOperandNode)curNode).operand2;
 
-            //System.out.println( "## "+lineNum);
-            //lineNum++;
+                lineNum = printRegs(reg1,reg2,curNode,lineNum)+1;
+            }
             return (parseNodes(lineNum, iter));
         }
         return lineNum;
@@ -72,29 +69,28 @@ public class Visitor
             Operand reg1 = ((TwoOperandNode)curNode).operand1;
             Operand reg2 = ((TwoOperandNode)curNode).operand2;
 
-            if( reg1.GetType() != 'A' && reg2.GetType() != 'A')
-            {
-                lineNum = printRegs(reg1,reg2,curNode,lineNum);
-            }
-            else
-            {
-                long addr1 = ((AddressOperand)reg1).GetAddress();
-                long addr2 = ((AddressOperand)reg2).GetAddress();
-                //System.out.print("What's this? "+reg1.GetType());
-                System.out.println(lineNum+":V_pR: R"+addr1+" "+curNode.GetType() +" " + "R"+addr2);
-            }
+            lineNum = printRegs(reg1,reg2,curNode,lineNum);
+
             return (parseOperands(lineNum+1,childIter));
         }
         return lineNum;
     }
     public static int printRegs(Operand reg1, Operand reg2,
                                 Node oper, int lineNum)
-    {// can maybe clean up and optomize this to print registers and addresses
-        System.out.print(lineNum+":V_pR: R"+((RegisterOperand)reg1).GetRegister
-                ());
-        System.out.print(" "+oper.GetType());
-        System.out.println(" R"+((RegisterOperand)reg2).GetRegister());
+    {
+        if(reg1.GetType() != 'A' && reg2.GetType() != 'A')
+        {
+            System.out.print(lineNum+":V_pR: R"+((RegisterOperand)reg1).GetRegister());
+            System.out.print(" "+oper.GetType());
+            System.out.println(" R"+((RegisterOperand)reg2).GetRegister());
+        }
+        else
+        {
+            long addr1 = ((AddressOperand)reg1).GetAddress();
+            long addr2 = ((AddressOperand)reg2).GetAddress();
 
+            System.out.println(lineNum+":V_pR: R"+addr1+" "+oper.GetType()+" " + "R"+addr2);
+        }
         return lineNum;
     }
 
