@@ -13,23 +13,14 @@ public class Visitor
           //  System.out.println("V:The first child is: "+((StatementsNode)
            //         base).children.remove());
         //}
-        //if( ((StatementsNode)base).children.peek() != null)
-        //{
-         //   base=((StatementsNode)base).children.remove();
-          //  Visit(base);
-        //}
-    }
-    private int lineNum;
-
-    static void Visit(Queue<Node> listOfNodes)
-    {
-      int lineNum = 0;
-      System.out.println("-------^^^-------");
-      Iterator <Node> iter = listOfNodes.iterator();
-      int i = Visitor.parseNodes(lineNum, iter);
-      System.out.println("-------$$$-------"+i);
-      //Visitor.uglyCode(listOfNodes);
-
+        if( ((StatementsNode)base).children.peek() != null)
+        {
+         int lineNum=0;
+            Queue<Node>childNodes=((StatementsNode)base).children;
+            Iterator <Node> iter = childNodes.iterator();
+            int i = Visitor.parseNodes(lineNum, iter);
+            System.out.println("-------$$$-------"+i);
+        }
     }
     static int parseNodes(int lineNum, Iterator <Node> iter)
     {
@@ -62,6 +53,8 @@ public class Visitor
 
                 System.out.println(lineNum+":V_pN:jmp $");
             }
+            //else
+
             //System.out.println( "## "+lineNum);
             //lineNum++;
             return (parseNodes(lineNum, iter));
@@ -88,10 +81,7 @@ public class Visitor
                 long addr1 = ((AddressOperand)reg1).GetAddress();
                 long addr2 = ((AddressOperand)reg2).GetAddress();
                 //System.out.print("What's this? "+reg1.GetType());
-                System.out.println(lineNum+":V_pR: R"+addr1+" "+curNode
-                        .GetType()
-                        +" " +
-                        "R"+addr2);
+                System.out.println(lineNum+":V_pR: R"+addr1+" "+curNode.GetType() +" " + "R"+addr2);
             }
             return (parseOperands(lineNum+1,childIter));
         }
@@ -99,7 +89,7 @@ public class Visitor
     }
     public static int printRegs(Operand reg1, Operand reg2,
                                 Node oper, int lineNum)
-    {
+    {// can maybe clean up and optomize this to print registers and addresses
         System.out.print(lineNum+":V_pR: R"+((RegisterOperand)reg1).GetRegister
                 ());
         System.out.print(" "+oper.GetType());
