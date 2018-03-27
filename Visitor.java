@@ -12,11 +12,11 @@ public class Visitor
          int lineNum=0;
             Queue<Node>childNodes=((StatementsNode)base).children;
             Iterator <Node> iter = childNodes.iterator();
-            int i = Visitor.parseNodes(lineNum, iter);
+            int i = Visitor.parseNodes(lineNum, iter,0);
             System.out.println("-------$$$-------"+i);
         }
     }
-    static int parseNodes(int lineNum, Iterator <Node> iter)
+    static int parseNodes(int lineNum, Iterator <Node> iter, int jNum)
     {
         if( iter.hasNext())
         {
@@ -45,16 +45,20 @@ public class Visitor
                 //parseOperands(parseOperands(lineNum, childIter), childIter);
                 lineNum = parseOperands(lineNum, childIter);
 
-                System.out.println(lineNum+":V_pN:jmp $");
+                System.out.println(lineNum+":V_pN:jmp $"+jNum);
+                jNum = 0;
+                lineNum++;
             }
             else
             {
                 Operand reg1 = ((TwoOperandNode)curNode).operand1;
                 Operand reg2 = ((TwoOperandNode)curNode).operand2;
 
+                jNum = lineNum;
                 lineNum = printRegs(reg1,reg2,curNode,lineNum)+1;
+
             }
-            return (parseNodes(lineNum, iter));
+            return (parseNodes(lineNum, iter,jNum));
         }
         return lineNum;
     }
