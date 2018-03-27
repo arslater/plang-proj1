@@ -35,7 +35,7 @@ public class Visitor
 
                 lineNum = parseOperands(lineNum, childIter);
 
-                System.out.println(lineNum+":V_pN: bne $00000000");
+                System.out.println(lineNum+": bne $00000000");
                 lineNum++;
 
                 /////////////////////////////////
@@ -45,7 +45,7 @@ public class Visitor
                 //parseOperands(parseOperands(lineNum, childIter), childIter);
                 lineNum = parseOperands(lineNum, childIter);
 
-                System.out.println(lineNum+":V_pN:jmp $"+jNum);
+                System.out.println(lineNum+": jmp $"+jNum);
                 jNum = 0;
                 lineNum++;
             }
@@ -82,18 +82,28 @@ public class Visitor
     public static int printRegs(Operand reg1, Operand reg2,
                                 Node oper, int lineNum)
     {
+        System.out.print(lineNum+": ");
+
+        switch (oper.GetType())
+        {
+            case '-':
+                System.out.print("sub ");
+                break;
+            case '+':
+                System.out.print("add ");
+                break;
+        }
         if(reg1.GetType() != 'A' && reg2.GetType() != 'A')
         {
-            System.out.print(lineNum+":V_pR: R"+((RegisterOperand)reg1).GetRegister());
-            System.out.print(" "+oper.GetType());
-            System.out.println(" R"+((RegisterOperand)reg2).GetRegister());
+            System.out.print("R"+((RegisterOperand)reg1).GetRegister());
+            System.out.println(",R"+((RegisterOperand)reg2).GetRegister());
         }
         else
         {
             long addr1 = ((AddressOperand)reg1).GetAddress();
             long addr2 = ((AddressOperand)reg2).GetAddress();
 
-            System.out.println(lineNum+":V_pR: R"+addr1+" "+oper.GetType()+" " + "R"+addr2);
+            System.out.println("$"+addr1+",$"+addr2);
         }
         return lineNum;
     }
