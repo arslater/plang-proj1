@@ -12,7 +12,7 @@ public class Visitor
          int lineNum=0;
             Queue<Node>childNodes=((StatementsNode)base).children;
             Iterator <Node> iter = childNodes.iterator();
-            int i = Visitor.parseNodes(lineNum, iter,0);
+            int i = Visitor.parseNodes(lineNum, iter,1);
             System.out.println("-------$$$-------"+i);
         }
     }
@@ -46,7 +46,7 @@ public class Visitor
                 lineNum = parseOperands(lineNum, childIter);
 
                 System.out.println(lineNum+": jmp $"+jNum);
-                jNum = 0;
+                jNum = 1;
                 lineNum++;
             }
             else
@@ -54,7 +54,7 @@ public class Visitor
                 Operand reg1 = ((TwoOperandNode)curNode).operand1;
                 Operand reg2 = ((TwoOperandNode)curNode).operand2;
 
-                jNum = lineNum;
+                jNum = lineNum+1;
                 lineNum = printRegs(reg1,reg2,curNode,lineNum)+1;
 
             }
