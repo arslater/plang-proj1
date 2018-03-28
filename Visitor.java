@@ -38,13 +38,15 @@ public class Visitor
         Node statements = ((WhileNode)thisNode).statements;
         Node conditions = ((WhileNode)thisNode).conditions;
 
-        System.out.println(lineNum+": bne $00000000");
+        lineNum = parseStatements(statements,lineNum);
 
-        i       = lineNum;
-        lineNum = parseStatements(statements,lineNum+1);
+        System.out.println((lineNum+1)+": bne $00000000");
+        i = lineNum;
+        lineNum++;
+
         lineNum = parseStatements(conditions, lineNum+1);
 
-        System.out.println((lineNum+1)+": jmp $"+(i-1));
+        System.out.println((lineNum+1)+": jmp $"+(i));
         lineNum++;
         return lineNum;
     }
