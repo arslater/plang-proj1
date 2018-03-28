@@ -7,10 +7,7 @@ public class Main {
   public static void main(String[] args) {
     Queue<Node> adds = new LinkedList<Node>();
     adds.add(new TwoOperandNode('+',new RegisterOperand(0),new RegisterOperand(1)));
-    adds.add(new TwoOperandNode('+',new RegisterOperand(1),new RegisterOperand(2)));
-    adds.add(new TwoOperandNode('+',new RegisterOperand(2),new RegisterOperand(3)));
-    adds.add(new TwoOperandNode('+',new RegisterOperand(3),new RegisterOperand(4)));
-    adds.add(new TwoOperandNode('+',new RegisterOperand(4),new RegisterOperand(5)));
+
 
     //Visitor.Visit
 
@@ -28,11 +25,13 @@ public class Main {
     baseNodes.add(new TwoOperandNode('-',new RegisterOperand(420),new RegisterOperand(69)));
     baseNodes.add(new TwoOperandNode('-',new AddressOperand(1000),new AddressOperand(2000)));
     baseNodes.add(new WhileNode(new StatementsNode(wyle),new StatementsNode(adds)));
+
+
+    //Queue<Node> baseNodes = new LinkedList<Node>();
+    //baseNodes.add(new WhileNode(new StatementsNode(wyle),new StatementsNode(subs)));
     Node base = new StatementsNode(baseNodes);
 
     Visitor.Visit(base);
     System.out.println("Second visitor call---------------------");
-    //Visitor.printList(baseNodes);
-
   }
 }

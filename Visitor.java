@@ -12,7 +12,7 @@ public class Visitor
          int lineNum=0;
             Queue<Node>childNodes=((StatementsNode)base).children;
             Iterator <Node> iter = childNodes.iterator();
-            int i = Visitor.parseNodes(lineNum, iter,1);
+            int i = Visitor.parseNodes(lineNum, iter,0);
             System.out.println("-------$$$-------"+i);
         }
     }
@@ -46,7 +46,7 @@ public class Visitor
                 lineNum = parseOperands(lineNum, childIter);
 
                 System.out.println(lineNum+": jmp $"+jNum);
-                jNum = 1;
+                jNum = 0;
                 lineNum++;
             }
             else
@@ -54,7 +54,7 @@ public class Visitor
                 Operand reg1 = ((TwoOperandNode)curNode).operand1;
                 Operand reg2 = ((TwoOperandNode)curNode).operand2;
 
-                jNum = lineNum+1;
+                jNum = lineNum;
                 lineNum = printRegs(reg1,reg2,curNode,lineNum)+1;
 
             }
@@ -68,14 +68,17 @@ public class Visitor
         if(childIter != null && childIter.hasNext())
         {
             Node curNode = childIter.next();
-            //Node condition = nodeChildren.element();
+            if (curNode.GetType() != 'w')
+            {
+                //Node condition = nodeChildren.element();
 
-            Operand reg1 = ((TwoOperandNode)curNode).operand1;
-            Operand reg2 = ((TwoOperandNode)curNode).operand2;
+                Operand reg1 = ((TwoOperandNode)curNode).operand1;
+                Operand reg2 = ((TwoOperandNode)curNode).operand2;
 
-            lineNum = printRegs(reg1,reg2,curNode,lineNum);
+                lineNum = printRegs(reg1,reg2,curNode,lineNum);
 
-            return (parseOperands(lineNum+1,childIter));
+                return (parseOperands(lineNum+1,childIter));
+            }
         }
         return lineNum;
     }
@@ -146,20 +149,3 @@ public class Visitor
     }
 }
 
-      /*  WhileNode myWhile;
-      for (Node item : givenNodes)
-      {
-          if(item.GetType() instanceof )
-          {
-              System.out.println("V_dW_if: by golly, there's a while here");
-              System.out.println("V_dW: "+i);
-          }
-          System.out.println("V_dW: "+item.toString());
-      }
-      return "works";
-    }
-}
-*//*
-if (someOperand.GetType() == 'R’)
-    int x = ((RegisterOperand)someOperand).GetRegister()
- */
