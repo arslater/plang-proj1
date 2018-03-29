@@ -1,5 +1,4 @@
 //@formatter:off
-import java.util.List;
 import java.util.Queue;
 
 public class Visitor
@@ -24,44 +23,40 @@ public class Visitor
     private static int parseStatements(Node thisNode,int lineNum)
     {
         Queue<Node> nodeQueue = ((StatementsNode)thisNode).children;
-        //System.out.print("s:"+thisNode.toString());
+
         lineNum = parseQueue(nodeQueue, lineNum);
         return lineNum;
     }
     private static int parseWhile(Node thisNode,int lineNum)
     {
-        int  i          = 0;
+        int  i          = lineNum;
         Node statements = ((WhileNode)thisNode).statements;
         Node conditions = ((WhileNode)thisNode).conditions;
 
-        //System.out.print("w::"+statements.toString());
-        //System.out.print("Wc:"+conditions.toString());
-
-        i = lineNum;
         lineNum = parseStatements(conditions,lineNum);
         System.out.println((lineNum)+": bne $00000000");
 
-        lineNum = parseStatements(statements, lineNum+1);
+        lineNum = parseStatements(statements,lineNum+1);
 
         System.out.println((lineNum)+": jmp $"+(i));
+
         lineNum++;
-        return lineNum;
+        return (lineNum);
     }
     private static int parseQueue(Queue<Node> nodeQueue, int lineNum)
     {
         if(nodeQueue.peek() != null)
         {
-            Node thisNode        = nodeQueue.remove();
-            //System.out.print("**"+thisNode.toString()+"**");
-            if(thisNode.GetType() == 'w')
+            Node thisNode    = nodeQueue.remove();
+
+            if(thisNode.GetType()      == 'w')
                 lineNum = parseWhile(thisNode,lineNum);
             else if(thisNode.GetType() == 's')
                 lineNum = parseStatements(thisNode,lineNum);
             else
-            {
                 lineNum = parseArgs(thisNode,lineNum);
-            }
-            lineNum = (parseQueue(nodeQueue,(lineNum+1)));
+
+            lineNum = (parseQueue(nodeQueue,(lineNum+1))); // recursive calling while incrementing linenumber
 
         }
         return lineNum;
@@ -107,6 +102,6 @@ public class Visitor
 
             System.out.println("$"+addr1+",$"+addr2);
         }
-        return lineNum;
+        return lineNum; // retaining the linenumber
     }
 }
