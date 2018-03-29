@@ -1,5 +1,4 @@
 //@formatter:off
-import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
@@ -20,16 +19,13 @@ public class Visitor
             case 'R':
                 parseArgs(base,lineNum);
                 break;
-            case 'A':
-                parseAddress(base,lineNum);
-                break;
         }
     }
     private static int parseStatements(Node thisNode,int lineNum)
     {
         Queue<Node> nodeQueue = ((StatementsNode)thisNode).children;
-        Iterator<Node> iter   = nodeQueue.iterator();
-        lineNum = parseQueue(iter, lineNum);
+        //System.out.print("s:"+thisNode.toString());
+        lineNum = parseQueue(nodeQueue, lineNum);
         return lineNum;
     }
     private static int parseWhile(Node thisNode,int lineNum)
@@ -38,33 +34,36 @@ public class Visitor
         Node statements = ((WhileNode)thisNode).statements;
         Node conditions = ((WhileNode)thisNode).conditions;
 
+        //System.out.print("w::"+statements.toString());
+        //System.out.print("Wc:"+conditions.toString());
+
         i = lineNum;
         lineNum = parseStatements(conditions,lineNum);
-        System.out.println((lineNum+1)+": bne $00000000");
+        System.out.println((lineNum)+": bne $00000000");
 
         lineNum = parseStatements(statements, lineNum+1);
 
-        System.out.println((lineNum+1)+": jmp $"+(i));
+        System.out.println((lineNum)+": jmp $"+(i));
         lineNum++;
         return lineNum;
     }
-    private static int parseQueue(Iterator<Node>iter, int lineNum)
+    private static int parseQueue(Queue<Node> nodeQueue, int lineNum)
     {
-        Node thisNode        = iter.next();
-
-        if(thisNode.GetType() == 'w')
-            lineNum = parseWhile(thisNode,lineNum);
-        else if(thisNode.GetType() == 's')
-            lineNum = parseStatements(thisNode,lineNum);
-        else
+        if(nodeQueue.peek() != null)
         {
-            ///////////////////////////////
-            // If it gets here, it must be either a 2 operand Node or an Address Node
-            //System.out.println("You have reached the end of your journey");
-            lineNum = parseArgs(thisNode,lineNum);
+            Node thisNode        = nodeQueue.remove();
+            //System.out.print("**"+thisNode.toString()+"**");
+            if(thisNode.GetType() == 'w')
+                lineNum = parseWhile(thisNode,lineNum);
+            else if(thisNode.GetType() == 's')
+                lineNum = parseStatements(thisNode,lineNum);
+            else
+            {
+                lineNum = parseArgs(thisNode,lineNum);
+            }
+            lineNum = (parseQueue(nodeQueue,(lineNum+1)));
+
         }
-        if(iter.hasNext())
-            lineNum = (parseQueue(iter,(lineNum+1)));
         return lineNum;
     }
     private static int parseArgs(Node thisNode, int lineNum)
@@ -110,5 +109,4 @@ public class Visitor
         }
         return lineNum;
     }
-    private static void parseAddress(Node thisNode,int lineNum){}
 }
